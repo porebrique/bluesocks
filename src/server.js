@@ -4,7 +4,7 @@ import * as lodash from 'lodash';
 export default class Server {
 
   constructor(settings) {
-    this.server = socks.createServer(function(info, accept, deny) {
+    this.server = socks.createServer((info, accept, deny) => {
       accept();
     });
     this.settings = settings;
@@ -17,10 +17,10 @@ export default class Server {
   }
 
   start() {
-    const { port } = this.settings.server;
+    const { port, host } = this.settings.server;
 
-    this.server.listen(port, 'localhost', () => {
-      console.log(`SOCKS server listening on port ${port}`);
+    this.server.listen(port, host, () => {
+      console.log(`SOCKS server listening on ${host}, port ${port}`);
     });
 
     this.server.useAuth(socks.auth.UserPassword((user, password, cb) => {
